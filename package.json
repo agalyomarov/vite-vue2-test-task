@@ -1,0 +1,23 @@
+{
+  "name": "vite-vue2-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "vite": "^4.5.14",
+    "vite-plugin-vue2": "^2.0.3",
+    "vue": "^2.7.16",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "dependencies": {
+    "axios": "^1.10.0"
+  }
+}
