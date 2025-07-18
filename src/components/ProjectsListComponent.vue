@@ -51,7 +51,7 @@ export default {
       const taskRes = await axios.get(`${apiUrl}/api/projects/${newProj.id}`);
       newProj.tasks = taskRes.data.data.tasks;
       projects.value.unshift(newProj);
-      taskForms[newProj.id] = { name: "", description: "" };
+      taskForms[newProj.id] = { name: "", description: "", user_id: newProj.user_id };
       newProject.name = "";
       newProject.description = "";
     };
@@ -60,10 +60,8 @@ export default {
     const deleteTask = async (projectId: number, taskId: number) => {
       await axios.delete(`${apiUrl}/api/projects/${projectId}/tasks/${taskId}`);
       const project = projects.value.find((p) => p.id === projectId);
-      if (project) {
-        const res = await axios.get(`${apiUrl}/api/projects/${projectId}`);
-        project.tasks = res.data.data.tasks;
-      }
+      const res = await axios.get(`${apiUrl}/api/projects/${projectId}`);
+      project.tasks = res.data.data.tasks;
     };
 
     // Создание задачи
@@ -75,10 +73,8 @@ export default {
         description: form.description,
       });
       const project = projects.value.find((p) => p.id === projectId);
-      if (project) {
-        const res = await axios.get(`${apiUrl}/api/projects/${projectId}`);
-        project.tasks = res.data.data.tasks;
-      }
+      const res = await axios.get(`${apiUrl}/api/projects/${projectId}`);
+      project.tasks = res.data.data.tasks;
       form.name = "";
       form.description = "";
     };
@@ -152,9 +148,10 @@ export default {
                 <li v-for="task in project.tasks" :key="task.id">
                   <div>
                     <div style="font-weight: 700">task name: {{ task.name }}</div>
-                    <div style="font-size: 12px">
+                    <div v-if="task.description" style="font-size: 12px">
                       task description: {{ task.description }}
                     </div>
+                    <button @click="deleteTask(project.id, task.id)">delete</button>
                   </div>
                 </li>
               </ul>
@@ -175,6 +172,15 @@ export default {
             </form>
           </div>
           <div v-if="project.description">Description: {{ project.description }}</div>
+        </div>
+      </li>
+    </ul>
+
+    <h2>Latest tasks</h2>
+    <ul>
+      <li v-for="task in latestTasks" :key="task.id">
+        <div>
+          <div style="font-weight: 700">task name: {{ task.name }}</div>
         </div>
       </li>
     </ul>
